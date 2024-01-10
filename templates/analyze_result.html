@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+	<h2>Hasil Analisis</h2>
+	<div class="col-lg-8 d-flex align-items-strech">
+		<div class="card w-100">
+			<div class="card-body">
+				<canvas id="myChart"></canvas>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="row">
+			<!-- <div class="col-lg-12 col-sm-6">
+				<div class="card">
+					<div class="card-body p-4">
+						<h5 class="card-title mb-10 fw-semibold">Total Caption</h5>
+						<h4 class="fw-semibold mb-3">{{total_data}}</h4>
+					</div>
+				</div>
+			</div> -->
+			<div class="col-lg-12 col-sm-6">
+				<div class="card">
+					<div class="card-body p-4">
+						<h5 class="card-title mb-10 fw-semibold">Caption Positif</h5>
+						<h4 class="fw-semibold mb-3">{{positive_count}}</h4>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12 col-sm-6">
+				<div class="card">
+					<div class="card-body p-4">
+						<h5 class="card-title mb-10 fw-semibold">Caption Negatif</h5>
+						<h4 class="fw-semibold mb-3">{{negative_count}}</h4>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12 col-sm-6">
+				<div class="card">
+					<div class="card-body p-4">
+						<h5 class="card-title mb-10 fw-semibold">Caption Netral</h5>
+						<h4 class="fw-semibold mb-3">{{neutral_count}}</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="card p-3">
+	<div class="card-header text-center">
+		<h5 class="card-title mb-0">{% block title %}Hasil{% endblock %}</h5>
+	</div>
+	<div class="card-body">
+		<div class="mb-3">
+			<label for="filterLabel">Filter Caption:</label>
+			<select id="filterLabel" class="form-select">
+				<option value="all">All</option>
+				<option value="netral">Netral</option>
+				<option value="positif">Positif</option>
+				<option value="negatif">Negatif</option>
+			</select>
+		</div>
+		{% if result_html %}
+		<div id="resultTable">
+			{{ result_html | safe }}
+		</div>		
+        {% else %}
+            <p>No result available.</p>
+        {% endif %}
+	</div>
+</div>
+<script>
+	const ctx = document.getElementById('myChart');
+	let positif = {{ positive_count }};
+	let negatif = {{ negative_count }};
+	let netral = {{ neutral_count }};
+	new Chart(ctx, {
+	  type: 'bar',
+	  data: {
+		labels: ['Positif', 'Negatif', 'Netral'],
+		datasets: [{
+		  label: 'Caption',
+		  data: [positif, negatif, netral],
+		  backgroundColor: [
+                'rgba(75, 192, 192, 0.6)', // Warna untuk 'Positif'
+                'rgba(255, 99, 132, 0.6)', // Warna untuk 'Negatif'
+                'rgba(255, 205, 86, 0.6)'  // Warna untuk 'Netral'
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 205, 86, 1)'
+            ],
+            borderWidth: 1
+		}]
+	  },
+	  options: {
+		scales: {
+		  y: {
+			beginAtZero: true
+		  }
+		}
+	  }
+	});
+
+	
+  </script>  
+  <!-- Modifikasi bagian JavaScript untuk menyaring baris tabel -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var filterLabel = document.getElementById('filterLabel');
+        var resultTable = document.getElementById('resultTable');
+
+        filterLabel.addEventListener('change', function () {
+            var selectedLabel = filterLabel.value;
+
+            // Ambil semua baris dalam tabel
+            var rows = resultTable.getElementsByTagName('tr');
+
+            // Semua baris ditampilkan
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].style.display = '';
+            }
+
+            // Jika yang dipilih bukan 'all', sembunyikan baris yang tidak sesuai
+            if (selectedLabel !== 'all') {
+                for (var i = 1; i < rows.length; i++) {
+                    var labelCell = rows[i].lastElementChild; // Ambil sel terakhir (kolom label)
+                    var labelValue = labelCell.textContent.toLowerCase();
+                    
+                    if (labelValue !== selectedLabel) {
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

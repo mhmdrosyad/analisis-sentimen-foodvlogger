@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+	<div class="col d-flex align-items-strech">
+	  <div class="card w-100">
+		<div class="card-body">
+		  <div class="d-flex align-items-center justify-content-center mb-10">
+			<div class="text-center">
+				<h5 class="card-title fw-semibold">{% block title %}Sistem Analisis Sentimen Caption Food Vloger{% endblock %}</h5>
+				<img class="mb-3" src="{{ url_for('static', filename='images/logo_umby.png') }}" width="300px">
+				<p class="card-text">JOSEPH GONSALES BAU</p>
+				<p class="card-text">201210064</p>
+			  
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+{% endblock %}

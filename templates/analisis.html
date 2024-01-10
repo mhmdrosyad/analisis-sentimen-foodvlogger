@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card p-3">
+	<div class="card-header text-center">
+		<h5 class="card-title mb-0">{% block title %}Mulai Analisis{% endblock %}</h5>
+	</div>
+	<div class="card-body">
+        <form action="/analisis" method="post">
+            <div class="mb-3">
+                <label class="mb-1">Masukkan caption</label>
+                <input name="caption" type="text" class="form-control" placeholder="Inputkan caption" value="{{ caption if caption else '' }}">
+            </div>
+            {% if prediction %}
+            <div class="mb-3">
+                <p>Sentiment: <strong>{{ prediction }}</strong></p>
+            </div>
+            {% endif %}
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Analisis Sentimen</button>
+            </div>
+        </form>
+	</div>
+</div>
+<div class="card p-3">
+	<div class="card-header text-center">
+		<h5 class="card-title mb-0">Analisis Batch</h5>
+	</div>
+	<div class="card-body">
+        <form action="/proses-naive" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="mb-1">Upload File (csv)</label>
+                <input name="file" type="file" class="form-control" placeholder="Input">
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Mulai</button>
+            </div>
+        </form>
+	</div>
+</div>
+{% endblock %}

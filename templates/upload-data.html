@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card p-3">
+	<div class="card-header text-center">
+		<h5 class="card-title mb-0">{% block title %}Upoad Data Set{% endblock %}</h5>
+	</div>
+	<div class="card-body">
+        <form action="/upload-data" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="mb-1">Upload File (csv)</label>
+                <input name="file" type="file" class="form-control" placeholder="Input">
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+	</div>
+</div>
+<div class="card p-3">
+	<div class="card-header text-center">
+		<h5 class="card-title mb-0">Data Set Saat ini</h5>
+	</div>
+	<div class="card-body">
+        <a href="/train" class="btn btn-warning">Training Dataset</a>
+        <a href="/delete-all" class="btn btn-danger">Hapus Semua Dataset</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Owner</th>
+                    <th>Waktu</th>
+                    <th>Caption</th>
+                    <th>Label</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row.owner }}</td>
+                    <td>{{ row.timestamp }}</td>
+                    <td>{{ row.caption }}</td>
+                    <td>{{ row.label }}</td>
+                    <td><a href="/delete/{{ row.id }}" class="btn btn-danger">Hapus</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+	</div>
+</div>
+{% endblock %}
